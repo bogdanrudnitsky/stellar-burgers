@@ -7,31 +7,24 @@ import styles from './constructor-page.module.css';
 
 export const ConstructorPage: FC = () => {
   const dispatch = useDispatch();
-  const isLoading = useSelector((state: any) => state.ingredients.isLoading);
-  const isInit = useSelector((state: any) => state.ingredients.isInit);
-  const ingredients = useSelector((state: any) => state.ingredients.ingredients);
-
-  console.log('🟢 ConstructorPage mounted');
-  console.log('📦 isLoading:', isLoading);
-  console.log('📦 isInit:', isInit);
-  console.log('📦 ingredients.length:', ingredients?.length);
+  const isLoading = useSelector((state) => state.ingredients.isLoading);
+  const isInit = useSelector((state) => state.ingredients.isInit);
 
   useEffect(() => {
-    console.log('🔄 useEffect triggered, isInit:', isInit);
     if (!isInit) {
-      console.log('🚀 Dispatching fetchIngredients...');
       dispatch(fetchIngredients());
     }
   }, [dispatch, isInit]);
 
   if (isLoading) {
-    console.log('⏳ Showing Preloader...');
     return <Preloader />;
   }
 
   return (
     <main className={styles.containerMain}>
-      <h1 className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-5`}>
+      <h1
+        className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-5`}
+      >
         Соберите бургер
       </h1>
       <div className={`${styles.main} pl-5 pr-5`}>
