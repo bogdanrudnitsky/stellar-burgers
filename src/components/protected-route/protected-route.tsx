@@ -3,6 +3,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from '../../services/store';
 import { checkUser } from '../../services/slices/user-slice';
 import { Preloader } from '@ui';
+import { RootState } from '../../services/store';
 
 interface ProtectedRouteProps {
   onlyUnAuth?: boolean;
@@ -15,8 +16,10 @@ export const ProtectedRoute = ({
 }: ProtectedRouteProps) => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const isAuthChecked = useSelector((state) => state.user.isAuthChecked);
-  const user = useSelector((state) => state.user.user);
+  const isAuthChecked = useSelector(
+    (state: RootState) => state.user.isAuthChecked
+  );
+  const user = useSelector((state: RootState) => state.user.user);
 
   useEffect(() => {
     dispatch(checkUser());

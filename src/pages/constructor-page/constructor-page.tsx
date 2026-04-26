@@ -3,31 +3,23 @@ import { useDispatch, useSelector } from '../../services/store';
 import { fetchIngredients } from '../../services/slices/ingredients-slice';
 import { BurgerIngredients, BurgerConstructor } from '../../components';
 import { Preloader } from '../../components/ui';
+import { RootState } from '../../services/store';
 import styles from './constructor-page.module.css';
 
 export const ConstructorPage: FC = () => {
   const dispatch = useDispatch();
-  const isLoading = useSelector((state: any) => state.ingredients.isLoading);
-  const isInit = useSelector((state: any) => state.ingredients.isInit);
-  const ingredients = useSelector(
-    (state: any) => state.ingredients.ingredients
+  const isLoading = useSelector(
+    (state: RootState) => state.ingredients.isLoading
   );
-
-  console.log('🏗️ ConstructorPage рендер');
-  console.log('📊 isLoading:', isLoading);
-  console.log('📊 isInit:', isInit);
-  console.log('📊 ingredients.length:', ingredients?.length);
+  const isInit = useSelector((state: RootState) => state.ingredients.isInit);
 
   useEffect(() => {
-    console.log('🟢 useEffect сработал, isInit=', isInit);
     if (!isInit) {
-      console.log('🚀 Вызываем fetchIngredients');
       dispatch(fetchIngredients());
     }
   }, [dispatch, isInit]);
 
   if (isLoading) {
-    console.log('⏳ Показываем Preloader');
     return <Preloader />;
   }
 

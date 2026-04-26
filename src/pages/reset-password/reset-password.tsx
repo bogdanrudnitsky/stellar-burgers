@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from '../../services/store';
 import { resetPassword } from '../../services/slices/user-slice';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../../services/store';
-import { AnyAction } from '@reduxjs/toolkit';
+import { UnknownAction } from '@reduxjs/toolkit';
 
 export const ResetPassword: FC = () => {
   const [password, setPassword] = useState('');
@@ -30,12 +30,14 @@ export const ResetPassword: FC = () => {
 
   const handleFormSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    dispatch(resetPassword({ password, token })).then((result: AnyAction) => {
-      if (result.meta?.requestStatus === 'fulfilled') {
-        localStorage.removeItem('resetPasswordEmail');
-        navigate('/login');
+    dispatch(resetPassword({ password, token })).then(
+      (result: UnknownAction) => {
+        if (result.type === resetPassword.fulfilled.type) {
+          localStorage.removeItem('resetPasswordEmail');
+          navigate('/login');
+        }
       }
-    });
+    );
   };
 
   return (
