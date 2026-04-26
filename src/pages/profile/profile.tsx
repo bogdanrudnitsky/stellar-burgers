@@ -2,11 +2,12 @@ import { FC, SyntheticEvent, useState, useEffect } from 'react';
 import { ProfileUI } from '@ui-pages';
 import { useDispatch, useSelector } from '../../services/store';
 import { updateUser } from '../../services/slices/user-slice';
+import { RootState } from '../../services/store';
 
 export const Profile: FC = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.user);
-  const error = useSelector((state) => state.user.error);
+  const user = useSelector((state: RootState) => state.user.user);
+  const error = useSelector((state: RootState) => state.user.error);
 
   const [formData, setFormData] = useState({
     name: user?.name || '',

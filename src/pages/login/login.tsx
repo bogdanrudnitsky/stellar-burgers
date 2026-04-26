@@ -3,6 +3,7 @@ import { LoginUI } from '@ui-pages';
 import { useDispatch, useSelector } from '../../services/store';
 import { loginUser } from '../../services/slices/user-slice';
 import { useNavigate } from 'react-router-dom';
+import { RootState } from '../../services/store';
 
 export const Login: FC = () => {
   const [email, setEmail] = useState('');
@@ -11,8 +12,8 @@ export const Login: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const error = useSelector((state) => state.user.error);
-  const user = useSelector((state) => state.user.user);
+  const error = useSelector((state: RootState) => state.user.error);
+  const user = useSelector((state: RootState) => state.user.user);
 
   useEffect(() => {
     if (user) {

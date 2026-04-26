@@ -1,21 +1,20 @@
 import { useState, useRef, FC, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { TTabMode } from '@utils-types';
+import { TTabMode, TIngredient } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
 import { useSelector } from '../../services/store';
+import { RootState } from '../../services/store';
 
 export const BurgerIngredients: FC = () => {
-  const ingredients = useSelector((state: any) => state.ingredients.ingredients);
-  
-  console.log('🍔 BurgerIngredients - ingredients:', ingredients);
-  
-  const buns = ingredients.filter((item: any) => item.type === 'bun');
-  const mains = ingredients.filter((item: any) => item.type === 'main');
-  const sauces = ingredients.filter((item: any) => item.type === 'sauce');
+  const ingredients = useSelector(
+    (state: RootState) => state.ingredients.ingredients
+  );
 
-  console.log('🍔 buns:', buns.length);
-  console.log('🍔 mains:', mains.length);
-  console.log('🍔 sauces:', sauces.length);
+  const buns = ingredients.filter((item: TIngredient) => item.type === 'bun');
+  const mains = ingredients.filter((item: TIngredient) => item.type === 'main');
+  const sauces = ingredients.filter(
+    (item: TIngredient) => item.type === 'sauce'
+  );
 
   const [activeTab, setActiveTab] = useState<TTabMode>('bun');
 

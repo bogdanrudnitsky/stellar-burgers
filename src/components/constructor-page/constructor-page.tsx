@@ -7,18 +7,11 @@ import styles from './constructor-page.module.css';
 
 export const ConstructorPage: FC = () => {
   const dispatch = useDispatch();
-  const isLoading = useSelector((state) => state.ingredients.isLoading);
-  const isInit = useSelector((state) => state.ingredients.isInit);
-
-  useEffect(() => {
-    if (!isInit) {
-      dispatch(fetchIngredients());
-    }
-  }, [dispatch, isInit]);
-
-  if (isLoading) {
-    return <Preloader />;
-  }
+  const isLoading = useSelector((state: any) => state.ingredients.isLoading);
+  const isInit = useSelector((state: any) => state.ingredients.isInit);
+  const ingredients = useSelector(
+    (state: any) => state.ingredients.ingredients
+  );
 
   return (
     <main className={styles.containerMain}>

@@ -3,6 +3,8 @@ import { ForgotPasswordUI } from '@ui-pages';
 import { useDispatch, useSelector } from '../../services/store';
 import { forgotPassword } from '../../services/slices/user-slice';
 import { useNavigate } from 'react-router-dom';
+import { RootState } from '../../services/store';
+import { AnyAction } from '@reduxjs/toolkit';
 
 export const ForgotPassword: FC = () => {
   const [email, setEmail] = useState('');
@@ -10,7 +12,7 @@ export const ForgotPassword: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const user = useSelector((state) => state.user.user);
+  const user = useSelector((state: RootState) => state.user.user);
 
   useEffect(() => {
     if (user) {
@@ -20,9 +22,12 @@ export const ForgotPassword: FC = () => {
 
   const handleFormSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    dispatch(forgotPassword({ email }));
-    localStorage.setItem('resetPasswordEmail', email);
-    navigate('/reset-password');
+    dispatch(forgotPassword({ email })).then((result: AnyAction) => {
+      if (result.meta?.requestStatus === 'fulfilled') {
+        localStorage.setItem('resetPasswordEmail', email);
+        navigate('/reset-password');
+      }
+    });
   };
 
   return (

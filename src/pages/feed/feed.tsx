@@ -3,11 +3,12 @@ import { Preloader } from '@ui';
 import { FeedUI } from '@ui-pages';
 import { useDispatch, useSelector } from '../../services/store';
 import { getFeedsThunk } from '../../services/slices/order-slice';
+import { RootState } from '../../services/store';
 
 export const Feed: FC = () => {
   const dispatch = useDispatch();
-  const feed = useSelector((state) => state.orders.feed);
-  const isLoading = useSelector((state) => state.orders.isLoading);
+  const feed = useSelector((state: RootState) => state.orders.feed);
+  const isLoading = useSelector((state: RootState) => state.orders.isLoading);
 
   useEffect(() => {
     dispatch(getFeedsThunk());

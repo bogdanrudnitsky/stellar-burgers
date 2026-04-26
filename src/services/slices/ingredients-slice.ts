@@ -51,29 +51,50 @@ const ingredientsSlice = createSlice({
         payload: { ...ingredient, id: generateUniqueId() }
       })
     },
-    deleteIngredient: (state, action: PayloadAction<TConstructorIngredient>) => {
-      state.constructorItems.ingredients = state.constructorItems.ingredients.filter(
-        (ingredient) => ingredient.id !== action.payload.id
-      );
+    deleteIngredient: (
+      state,
+      action: PayloadAction<TConstructorIngredient>
+    ) => {
+      state.constructorItems.ingredients =
+        state.constructorItems.ingredients.filter(
+          (ingredient) => ingredient.id !== action.payload.id
+        );
     },
-    moveUpIngredient: (state, action: PayloadAction<TConstructorIngredient>) => {
+    moveUpIngredient: (
+      state,
+      action: PayloadAction<TConstructorIngredient>
+    ) => {
       const index = state.constructorItems.ingredients.findIndex(
         (arr) => arr.id === action.payload.id
       );
       if (index > 0) {
         const ingredientToMove = state.constructorItems.ingredients[index];
         state.constructorItems.ingredients.splice(index, 1);
-        state.constructorItems.ingredients.splice(index - 1, 0, ingredientToMove);
+        state.constructorItems.ingredients.splice(
+          index - 1,
+          0,
+          ingredientToMove
+        );
       }
     },
-    moveDounIngredient: (state, action: PayloadAction<TConstructorIngredient>) => {
+    moveDounIngredient: (
+      state,
+      action: PayloadAction<TConstructorIngredient>
+    ) => {
       const index = state.constructorItems.ingredients.findIndex(
         (arr) => arr.id === action.payload.id
       );
-      if (index !== -1 && index < state.constructorItems.ingredients.length - 1) {
+      if (
+        index !== -1 &&
+        index < state.constructorItems.ingredients.length - 1
+      ) {
         const ingredientToMove = state.constructorItems.ingredients[index];
         state.constructorItems.ingredients.splice(index, 1);
-        state.constructorItems.ingredients.splice(index + 1, 0, ingredientToMove);
+        state.constructorItems.ingredients.splice(
+          index + 1,
+          0,
+          ingredientToMove
+        );
       }
     },
     clearIngredients: (state) => {
@@ -92,19 +113,15 @@ const ingredientsSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getIngredientsThunk.pending, (state) => {
       state.isLoading = true;
-      console.log('🔄 Pending: isLoading = true');
     });
     builder.addCase(getIngredientsThunk.rejected, (state) => {
       state.isInit = true;
       state.isLoading = false;
-      console.log('❌ Rejected: isInit = true, isLoading = false');
     });
     builder.addCase(getIngredientsThunk.fulfilled, (state, { payload }) => {
       state.isInit = true;
       state.isLoading = false;
       state.ingredients = payload;
-      console.log('✅ Fulfilled: ingredients loaded', payload);
-      console.log('📊 Количество ингредиентов:', payload.length);
     });
   }
 });

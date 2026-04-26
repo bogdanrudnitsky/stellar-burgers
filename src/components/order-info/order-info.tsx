@@ -4,30 +4,39 @@ import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { useDispatch, useSelector } from '../../services/store';
 import { getOrderByNumberThunk } from '../../services/slices/order-slice';
+import { RootState } from '../../services/store';
+import { TIngredient } from '@utils-types';
 
 export const OrderInfo: FC = () => {
   const dispatch = useDispatch();
   const params = useParams();
   const orderNumber = Number(params.number);
 
-  const orderModalData = useSelector((state) => state.orders.orderModalData);
-  const ingredients = useSelector((state) => state.ingredients.ingredients);
-  const isLoading = useSelector((state) => state.orders.isLoading);
+  const orderModalData = useSelector(
+    (state: RootState) => state.orders.orderModalData
+  );
+  const ingredients = useSelector(
+    (state: RootState) => state.ingredients.ingredients
+  );
+  const isLoading = useSelector((state: RootState) => state.orders.isLoading);
 
   useEffect(() => {
-    if (orderNumber && !orderModalData) {
+    if (orderNumber) {
       dispatch(getOrderByNumberThunk(orderNumber));
     }
-  }, [dispatch, orderNumber, orderModalData]);
+  }, [dispatch, orderNumber]);
 
   const preparedOrderInfo = useMemo(() => {
     if (!orderModalData || !ingredients.length) return null;
 
-    const ingredientsInfo: { [key: string]: any & { count: number } } = {};
+    const ingredientsInfo: { [key: string]: TIngredient & { count: number } } =
+      {};
 
     if (orderModalData.ingredients && orderModalData.ingredients.length > 0) {
       orderModalData.ingredients.forEach((id: string) => {
-        const ingredient = ingredients.find((item) => item._id === id);
+        const ingredient = ingredients.find(
+          (item: TIngredient) => item._id === id
+        );
         if (ingredient) {
           if (ingredientsInfo[id]) {
             ingredientsInfo[id].count += 1;

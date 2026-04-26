@@ -15,7 +15,12 @@ import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { ProtectedRoute } from '../protected-route/protected-route';
 import { useDispatch, useSelector } from '../../services/store';
 import { getIngredientsThunk } from '../../services/slices/ingredients-slice';
-import { closeOrder } from '../../services/slices/order-slice';
+import {
+  closeOrder,
+  resetConstructorAfterOrder
+} from '../../services/slices/order-slice';
+import { checkUser } from '../../services/slices/user-slice';
+import { resetConstructor } from '../../services/slices/ingredients-slice';
 import styles from './app.module.css';
 
 function App() {
@@ -23,11 +28,28 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const background = location.state?.background;
-  const orderRequest = useSelector((state) => state.orders.orderRequest);
+  const orderModalData = useSelector((state) => state.orders.orderModalData);
+  const shouldResetConstructor = useSelector(
+    (state) => state.orders.shouldResetConstructor
+  );
 
+  // Загрузка ингредиентов при старте
   useEffect(() => {
     dispatch(getIngredientsThunk());
   }, [dispatch]);
+
+  // Проверка пользователя при старте
+  useEffect(() => {
+    dispatch(checkUser());
+  }, [dispatch]);
+
+  // Очистка конструктора после успешного создания заказа
+  useEffect(() => {
+    if (shouldResetConstructor) {
+      dispatch(resetConstructor());
+      dispatch(resetConstructorAfterOrder());
+    }
+  }, [shouldResetConstructor, dispatch]);
 
   const handleCloseOrderModal = () => {
     dispatch(closeOrder());
