@@ -2,3 +2,6 @@ node_modules
 .env
 .idea
 dist
+cypress/screenshots/
+cypress/videos/
+coverage/

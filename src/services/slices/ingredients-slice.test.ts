@@ -67,7 +67,6 @@ describe('ingredients slice', () => {
   it('should delete ingredient from constructor', () => {
     const addAction = addIngredient(mockIngredient);
     let newState = ingredientReducer(initialState, addAction);
-    const ingredientId = newState.constructorItems.ingredients[0].id;
     const deleteAction = deleteIngredient(
       newState.constructorItems.ingredients[0]
     );
@@ -91,6 +90,27 @@ describe('ingredients slice', () => {
     expect(newState.constructorItems.ingredients[0].id).toBe(ingredient2.id);
   });
 
+  // ✅ ДОБАВЛЕН ТЕСТ: проверка перемещения ингредиента вниз
+  it('should move ingredient down', () => {
+    const ingredient1 = addIngredient(mockIngredient).payload;
+    const ingredient2 = addIngredient(mockIngredient).payload;
+    const ingredient3 = addIngredient(mockIngredient).payload;
+
+    let state = {
+      ...initialState,
+      constructorItems: {
+        bun: null,
+        ingredients: [ingredient1, ingredient2, ingredient3]
+      }
+    };
+
+    const action = moveDounIngredient(ingredient2);
+    const newState = ingredientReducer(state, action);
+
+    expect(newState.constructorItems.ingredients[2].id).toBe(ingredient2.id);
+    expect(newState.constructorItems.ingredients[1].id).toBe(ingredient3.id);
+  });
+
   // тест для проверки, что конструктор очищается
   it('should clear constructor', () => {
     const addAction = addIngredient(mockBun);
@@ -107,7 +127,7 @@ describe('ingredients slice', () => {
     expect(newState.isLoading).toBe(true);
   });
 
-  // тест для проверки, что при успешном запросе данные сохраняются и isLoading становится false
+  // тест для проверки, что при успешном запросе данные сохраняются
   it('should set ingredients and isLoading to false on fulfilled', () => {
     const mockIngredients = [mockBun, mockIngredient];
     const action = {

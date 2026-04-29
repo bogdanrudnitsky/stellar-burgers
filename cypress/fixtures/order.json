@@ -1,13 +1,7 @@
 {
   "success": true,
   "order": {
-    "_id": "test123",
-    "status": "done",
-    "name": "Флюоресцентный бургер",
-    "createdAt": "2024-01-01T00:00:00.000Z",
-    "updatedAt": "2024-01-01T00:00:00.000Z",
-    "number": 12345,
-    "ingredients": ["1", "2"]
+    "number": 12345
   },
-  "name": "Флюоресцентный бургер"
+  "name": "Тестовый бургер"
 }
